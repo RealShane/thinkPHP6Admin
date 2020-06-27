@@ -1,0 +1,66 @@
+﻿<!DOCTYPE HTML>
+<html>
+<head>
+  <title>后台登录</title>
+  {include file="public/_meta" /}
+  <link rel="stylesheet" type="text/css" href="/assets/css/admin/adminlte.min.css" />
+</head>
+<body class="hold-transition login-page">
+<div class="login-box">
+  <div class="login-logo">
+    <a><b>后 台</b></a>
+  </div>
+  <div class="card">
+    <div class="card-body login-card-body">
+      <p class="login-box-msg">登陆</p>
+
+      <form method="post">
+        <div class="input-group mb-3">
+          <input id="username" type="text" class="form-control" placeholder="用户名...">
+          <div class="input-group-append">
+            <div class="input-group-text">
+              <i class="Hui-iconfont">&#xe62b;</i>
+            </div>
+          </div>
+        </div>
+        <div class="input-group mb-3">
+          <input id="password" type="password" class="form-control" placeholder="密码...">
+          <div class="input-group-append">
+            <div class="input-group-text">
+              <i class="Hui-iconfont">&#xe63f;</i>
+            </div>
+          </div>
+        </div>
+        <div class="input-group mb-3">
+          <input id="validate" type="text" class="form-control" placeholder="验证码...">
+          <div class="input-group-append">
+            <div class="input-group-text">
+              <i class="Hui-iconfont">&#xe605;</i>
+            </div>
+          </div>
+        </div>
+        <div class="text-center">
+          <div class="col-12">
+            <div>
+              <img id="captcha" src="{:captcha_src()}" alt="点击更新验证码" />
+            </div>
+            <a href="#" id="captcha_a"><small>看不清?点图片或者点我</small></a>
+          </div>
+        </div>
+        <div class="text-center">
+          <div class="col-12">
+            <button id="login_send" type="button" class="btn btn-primary btn-block">登 录</button>
+          </div>
+        </div>
+      </form>
+
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript" src="/lib/jquery/1.9.1/jquery.min.js"></script>
+<script type="text/javascript" src="/lib/layer/3.1.1/layer.js"></script>
+<script src="/assets/js/admin/admin_public/admin.login.ajax.js"></script>
+<script src="/assets/js/admin/admin_public/reload.captcha.js"></script>
+</body>
+</html>

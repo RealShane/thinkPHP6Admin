@@ -1,0 +1,43 @@
+
+<!DOCTYPE HTML>
+<html>
+<head>
+	{include file="public/_meta" /}
+</head>
+<body style="background-color:#fff">
+<div class="wap-container">
+	<div class="panel">
+		<div class="panel-body">
+			<form class="form form-horizontal" id="form-admin-add">
+				<div class="row clearfix">
+					<label class="form-label col-xs-4 col-sm-3">自增id</label>
+					<div class="form-controls col-xs-8 col-sm-9">
+						<input type="text" class="input-text" id="id">
+					</div>
+				</div>
+				<div class="row clearfix">
+					<label class="form-label col-xs-4 col-sm-3">管理员名</label>
+					<div class="form-controls col-xs-8 col-sm-9">
+						<input type="text" class="input-text" id="username">
+					</div>
+				</div>
+				<div class="row clearfix">
+					<label class="form-label col-xs-4 col-sm-3">权限组所属</label>
+					<div class="form-controls col-xs-8 col-sm-9">
+						<input type="text" class="input-text" id="group">
+					</div>
+				</div>
+
+				<div class="row clearfix">
+					<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
+						<input id='commit' class="btn btn-primary radius" type="button" value="&nbsp;&nbsp;提交&nbsp;&nbsp;">
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+{include file="public/_footer" /}
+<script src="/assets/js/admin/admin_auth_access/add.edit.js"></script>
+</body>
+</html>

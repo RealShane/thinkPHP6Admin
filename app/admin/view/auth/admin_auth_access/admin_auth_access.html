@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {include file="public/_meta" /}
+</head>
+<body>
+<div class="wap-container">
+    <nav class="breadcrumb" style="background-color:#fff;padding: 0 24px">
+        首页
+        <span class="c-gray en">/</span>
+        权限管理
+        <span class="c-gray en">/</span>
+        管理员权限分配
+        <a class="btn btn-success radius f-r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a>
+    </nav>
+
+    <article class="Hui-admin-content clearfix">
+
+        <div class="row clearfix">
+            <div class="col-xs-12 col-sm-6 col-md-4">
+                <div class="row clearfix mb-10">
+                    <span class="col-xs-4 form-item-label">键：</span>
+                    <span class="col-xs-8 form-item-control">
+                        <span class="select-box">
+                            <select id="searchKey" class="select">
+                                <option value="id">自增id</option>
+                                <option value="username">管理员名</option>
+                                <option value="group">权限组所属</option>
+                            </select>
+                        </span>
+                    </span>
+                </div>
+            </div>
+
+            <div class="col-xs-12 col-sm-6 col-md-4">
+                <div class="row clearfix mb-10">
+                    <span class="col-xs-4 form-item-label">值：</span>
+                    <span class="col-xs-8 form-item-control">
+                        <input type="text" id="searchValue" placeholder="输入..." class="input-text" />
+                    </span>
+                </div>
+            </div>
+            <div class="col-xs-12 col-sm-6 col-md-4">
+                <div class="row clearfix">
+                    <span class="col-xs-4 form-item-control">
+                        <button id="search_send" class="btn btn-success radius" type="button"><i class="Hui-iconfont">&#xe665;</i> 查询</button>
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel mt-20">
+            <div class="panel-body">
+                <div class="clearfix">
+						<span class="f-l">
+							<a id='batchDelete' href="#" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a>
+							<a id="add" href="#" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 添加数据</a>
+						</span>
+                    <span class="f-r" id='num_room'>共有数据：<strong id='data_num'></strong> 条</span>
+                </div>
+                <div class="mt-20 clearfix">
+                    <table id='dataSingleSet' class="table table-border table-bordered table-bg table-hover table-sort">
+                        <thead>
+                        <tr>
+                            <th scope="col" colspan="5">管理员权限分配</th>
+                        </tr>
+                        <tr class="text-c">
+                            <th></th>
+                            <th id='id'>自增id</th>
+                            <th id='username'>管理员名</th>
+                            <th id='group'>权限组所属</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody id='dataRoom'>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </article>
+</div>
+{include file="public/_footer" /}
+<script src="/assets/js/admin/admin_auth_access/admin.auth.access.js"></script>
+
+</body>
+</html>

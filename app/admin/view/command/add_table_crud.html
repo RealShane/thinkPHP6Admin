@@ -1,0 +1,35 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	{include file="public/_meta" /}
+</head>
+<body>
+<article class="page-container">
+	<form class="form form-horizontal" id="form-admin-add">
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3">所有的表：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<select class="select" id="tables_name">
+
+				</select>
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3">二级目录：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<select class="select" id="catalogue">
+					<option>不选择</option>
+				</select>
+			</div>
+		</div>
+		<div class="row cl">
+			<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
+				<input id="send" class="btn btn-primary radius" type="button" value="&nbsp;&nbsp;提交&nbsp;&nbsp;">
+			</div>
+		</div>
+	</form>
+</article>
+{include file="public/_footer" /}
+<script src="/assets/js/admin/admin_command/admin.add.tables.crud.js"></script>
+</body>
+</html>

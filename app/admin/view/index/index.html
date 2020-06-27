@@ -1,0 +1,41 @@
+﻿<!DOCTYPE HTML>
+<html>
+<head>
+<title>后台管理</title>
+{include file="public/_meta" /}
+</head>
+<body>
+{include file="public/_menu" /}
+{include file="public/_header" /}
+
+
+<div id="Hui-admin-tabNav" class="Hui-admin-tabNav">
+	<div class="Hui-admin-tabNav-wp">
+		<ul id="min_title_list" class="acrossTab clearfix" style="width: 241px; left: 0px;">
+			<li class="active"><span title="我的桌面" data-href="/{$FILE}/indexWelcome">我的桌面</span><em></em></li>
+		</ul>
+	</div>
+	<div class="Hui-admin-tabNav-more btn-group" style="display: none;">
+		<a id="js-tabNav-prev" class="btn radius btn-default size-S" href="javascript:;"><i class="Hui-iconfont">&#xe6d4;</i></a>
+		<a id="js-tabNav-next" class="btn radius btn-default size-S" href="javascript:;"><i class="Hui-iconfont">&#xe6d7;</i></a>
+	</div>
+</div>
+
+<div id="iframe_box" class="Hui-admin-article">
+	<div class="show_iframe">
+		<iframe id="iframe-welcome" data-scrolltop="0" scrolling="yes" frameborder="0" src="/{$FILE}/indexWelcome"></iframe>
+	</div>
+</div>
+</section>
+<div class="contextMenu" id="Huiadminmenu">
+	<ul>
+		<li id="closethis">关闭当前 </li>
+		<li id="closeother">关闭其他 </li>
+		<li id="closeall">关闭全部 </li>
+	</ul>
+</div>
+
+{include file="public/_footer" /}
+<script type="text/javascript" src="/lib/jquery.contextmenu/jquery.contextmenu.r2.js"></script>
+</body>
+</html>

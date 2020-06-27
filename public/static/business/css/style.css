@@ -1,0 +1,100 @@
+@charset "utf-8";
+/* 你自己的样式 */
+body {
+  background-color: #f0f2f5;
+}
+.Hui-admin-content {
+  padding: 24px;
+}
+/*权限*/
+.Hui-admin-permission-list {
+	border: solid 1px #eee;
+}
+.Hui-admin-permission-list > dt {
+	background-color: #efefef;
+	padding: 5px 10px;
+}
+.Hui-admin-permission-list > dd {
+	padding: 10px;
+	padding-left: 30px;
+}
+.Hui-admin-permission-list > dd > dl {
+	border-bottom: solid 1px #eee;
+	padding: 5px 0;
+}
+.Hui-admin-permission-list > dd > dl > dt {
+	display: inline-block;
+	float: left;
+	white-space: nowrap;
+	width: 100px;
+}
+.Hui-admin-permission-list > dd > dl > dd {
+	margin-left: 100px;
+}
+.Hui-admin-permission-list > dd > dl > dd > label{
+	padding-right: 10px;
+}
+
+/*图片预览*/
+.Hui-admin-portfolio-area {
+	margin-right: -20px;
+}
+.Hui-admin-portfolio-area li {
+	position: relative;
+	float: left;
+	margin-right: 20px;
+	width: 162px;
+	height: 162px;
+	margin-top: 20px;
+}
+.Hui-admin-portfolio-area li.hover {
+	z-index:9
+}
+.Hui-admin-portfolio-area li .portfoliobox {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 152px;
+	height: 152px;
+	padding: 5px;
+	border: solid 1px #eee;
+	background-color: #fff;
+}
+.Hui-admin-portfolio-area li .checkbox {
+	position: absolute;
+	top: 10px;
+	right: 5px;
+	cursor:pointer;
+}
+.Hui-admin-portfolio-area li.hover .portfoliobox {
+	height: auto;
+	padding-bottom: 10px;
+	box-shadow: 0 1px 3px rgba(68, 68, 68,0.3);
+	-moz-box-shadow: 0 1px 3px rgba(68, 68, 68,0.3);
+	-webkit-box-shadow:0 1px 3px rgba(68, 68, 68,0.3)
+}
+.Hui-admin-portfolio-area li .picbox {
+	width: 150px;
+	height: 150px;
+	overflow: hidden;
+	text-align: center;
+	vertical-align: middle;
+	display: table-cell;
+	line-height: 150px;
+}
+.Hui-admin-portfolio-area li .picbox img {
+	max-width: 150px;
+	max-height: 150px;
+	vertical-align: middle;
+}
+.Hui-admin-portfolio-area li .textbox {
+	display: none;
+	margin-top: 5px;
+}
+.Hui-admin-portfolio-area li.hover .textbox {
+	display: block;
+}
+.Hui-admin-portfolio-area li label {
+	display: block;
+	cursor: pointer;
+}
