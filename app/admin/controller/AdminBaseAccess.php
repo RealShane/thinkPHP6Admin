@@ -39,7 +39,7 @@ class AdminBaseAccess extends BaseMethod
         return $this -> show(
             config("status.success"),
             config("message.success"),
-            AdminUserBusiness::getLoginInfo()
+            (new AdminUserBusiness) -> getLoginInfo()
         );
     }
 
