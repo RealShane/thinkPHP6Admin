@@ -69,7 +69,7 @@ class AdminUser
         $salt = $this -> salt();
         $ip = request() -> ip();
 
-        $data['password'] = md5($salt.$data['password'].$salt);
+        $data['password'] = md5($salt . $data['password'] . $salt);
         $data['password_salt'] = $salt;
         $data['last_login_ip'] = $ip;
         $data['last_login_time'] = time();

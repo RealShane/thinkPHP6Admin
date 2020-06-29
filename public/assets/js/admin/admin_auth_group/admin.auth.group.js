@@ -11,25 +11,39 @@ $(document).ready(function(){
             contentType : "application/x-www-form-urlencoded",
             url : '/' + FILE + '/AdminAuthGroup/seeAll',
             success : function(res) {
-                var i = 1;
                 $("#data_num").append(
                     "<strong>"+res.result.length+"</strong>"
                 );
-                for(let key of res.result){
-
-                    $("#dataRoom").append(
-                        "<tr>" +
-                            "<td><input type='checkbox' name='multiple' value="+key['id']+"></td>>" +
-                            "<td>"+key['id']+"</td>" +"<td>"+key['name']+"</td>" +"<td>"+key['rules']+"</td>" +"<td>"+key['create_time']+"</td>" +"<td>"+key['update_time']+"</td>" +
-                            "<td class='td-manage'>" +
-                                "<span class='label label - success radius'><a onClick='edit("+key['id']+")'>编辑</a></span>" +
-                                "<span class='label radius'><a onClick='delete_single("+key['id']+")'>删除</a></span>" +
-                            "</td>" +
-                        "</tr>"
-                    );
-                    i++;
-                }
-
+                layui.use('laypage', function(){
+                    var laypage = layui.laypage;
+                    laypage.render({
+                        elem : 'page_set',
+                        limit : 10,
+                        first : '首页',
+                        last : '尾页',
+                        curr : res.result,
+                        layout : ['count', 'prev', 'page', 'next'],
+                        count : res.result.length,
+                        jump: function(obj){
+                            document.getElementById('dataRoom').innerHTML = function(){
+                                var arr = [], thisData = res.result.concat().splice(obj.curr*obj.limit - obj.limit, obj.limit);
+                                layui.each(thisData, function(index, key){
+                                    arr.push(
+                                        "<tr>" +
+                                            "<td><input type='checkbox' name='multiple' value="+key['id']+"></td>" +
+                                            "<td>"+key['id']+"</td>" +"<td>"+key['name']+"</td>" +"<td>"+key['rules']+"</td>" +"<td>"+key['create_time']+"</td>" +"<td>"+key['update_time']+"</td>" +
+                                            "<td class='td-manage'>" +
+                                                "<span class='label label - success radius'><a onClick='edit("+key['id']+")'>编辑</a></span>" +
+                                                "<span class='label radius'><a onClick='delete_single("+key['id']+")'>删除</a></span>" +
+                                            "</td>" +
+                                        "</tr>"
+                                    );
+                                });
+                                return arr.join('');
+                            }();
+                        }
+                    });
+                });
             }
         });
 
@@ -85,20 +99,36 @@ $("#search_send").click(function(){
                 $("#dataSingleSet").append(
                     "<tbody id='dataRoom'></tbody>"
                 );
-                var i = 1;
-                for(let key of res.result){
-                    $("#dataRoom").append(
-                        "<tr>" +
-                            "<td><input type='checkbox' name='multiple' value="+key['id']+"></td>" +
-                            "<td>"+key['id']+"</td>" +"<td>"+key['name']+"</td>" +"<td>"+key['rules']+"</td>" +"<td>"+key['create_time']+"</td>" +"<td>"+key['update_time']+"</td>" +
-                            "<td class='td-manage'>" +
-                                "<span class='label label - success radius'><a onClick='edit("+key['id']+")'>编辑</a></span>" +
-                                "<span class='label radius'><a onClick='delete_single("+key['id']+")'>删除</a></span>" +
-                            "</td>" +
-                        "</tr>"
-                    );
-                    i++;
-                }
+                layui.use('laypage', function(){
+                    var laypage = layui.laypage;
+                    laypage.render({
+                        elem : 'page_set',
+                        limit : 10,
+                        first : '首页',
+                        last : '尾页',
+                        curr : res.result,
+                        layout : ['count', 'prev', 'page', 'next'],
+                        count : res.result.length,
+                        jump: function(obj){
+                            document.getElementById('dataRoom').innerHTML = function(){
+                                var arr = [], thisData = res.result.concat().splice(obj.curr*obj.limit - obj.limit, obj.limit);
+                                layui.each(thisData, function(index, key){
+                                    arr.push(
+                                        "<tr>" +
+                                            "<td><input type='checkbox' name='multiple' value="+key['id']+"></td>" +
+                                            "<td>"+key['id']+"</td>" +"<td>"+key['name']+"</td>" +"<td>"+key['rules']+"</td>" +"<td>"+key['create_time']+"</td>" +"<td>"+key['update_time']+"</td>" +
+                                            "<td class='td-manage'>" +
+                                                "<span class='label label - success radius'><a onClick='edit("+key['id']+")'>编辑</a></span>" +
+                                                "<span class='label radius'><a onClick='delete_single("+key['id']+")'>删除</a></span>" +
+                                            "</td>" +
+                                        "</tr>"
+                                    );
+                                });
+                                return arr.join('');
+                            }();
+                        }
+                    });
+                });
             }
         }
     });

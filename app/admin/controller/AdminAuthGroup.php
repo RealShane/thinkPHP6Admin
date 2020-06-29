@@ -16,10 +16,35 @@ class AdminAuthGroup extends BaseMethod
     public function retrieveData(){
         $key = $this -> request -> param("key", '', 'trim');
         $value = $this -> request -> param("value", '', 'trim');
+        $data = $this -> Retrieve('z_admin_auth_group', $key, $value);
+        $res = [];
+        foreach ($data as $key){
+            $rules = explode(',', $key['rules']);
+            $str = "可用权限：";
+            foreach ($rules as $rule){
+                if ($rule == '*'){
+                    $str = "超级权限";
+                    break;
+                }
+                if ($rule == NULL){
+                    continue;
+                }
+                $temp = (new \app\common\model\admin\AdminGenerator()) -> findById($rule);
+                $str .= " " . $temp['table_comment'];
+            }
+            $res[] = [
+                'id' => $key['id'],
+                'name' => $key['name'],
+                'rules' => $str,
+                'rules_id' => $rules,
+                'create_time' => $key['create_time'],
+                'update_time' => $key['update_time']
+            ];
+        }
         return $this -> show(
             config("status.success"),
             config("message.success"),
-            $this -> Retrieve('z_admin_auth_group', $key, $value)
+            $res
         );
     }
     
@@ -67,10 +92,34 @@ class AdminAuthGroup extends BaseMethod
     }
     
     public function seeAll(){
+        $data = $this -> throwAll('z_admin_auth_group');
+        $res = [];
+        foreach ($data as $key){
+            $rules = explode(',', $key['rules']);
+            $str = "可用权限：";
+            foreach ($rules as $rule){
+                if ($rule == '*'){
+                    $str = "超级权限";
+                    break;
+                }
+                if ($rule == NULL){
+                    continue;
+                }
+                $temp = (new \app\common\model\admin\AdminGenerator()) -> findById($rule);
+                $str .= " " . $temp['table_comment'];
+            }
+            $res[] = [
+                'id' => $key['id'],
+                'name' => $key['name'],
+                'rules' => $str,
+                'create_time' => $key['create_time'],
+                'update_time' => $key['update_time']
+            ];
+        }
         return $this -> show(
             config("status.success"),
             config("message.success"),
-            $this -> throwAll('z_admin_auth_group')
+            $res
         );
     }
     
@@ -80,6 +129,14 @@ class AdminAuthGroup extends BaseMethod
             config("status.success"),
             config("message.success"),
             $this -> batchDelete('z_admin_auth_group', $ids)
+        );
+    }
+
+    public function seeGenerator(){
+        return $this -> show(
+            config("status.success"),
+            config("message.success"),
+            $this -> throwAll('z_admin_generator')
         );
     }
 

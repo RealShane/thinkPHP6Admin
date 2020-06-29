@@ -19,4 +19,8 @@ class AdminGenerator extends Model
 
     protected $autoWriteTimestamp = false;
 
+    public function findById($id){
+        return $this -> where('id', $id) -> find();
+    }
+
 }

@@ -12,6 +12,6 @@ return[
     //登陆Token
     "token_pre" => "access_token_pre_",
     //登陆Token持续时间(一天)
-    "token_expire" => 24 * 3600,
+    "token_expire" => 24*3600,
 
 ];

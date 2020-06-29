@@ -1,5 +1,4 @@
 $(document).ready(function() {
-
     var url = location.search; //获取url中"?"符后的字串
     url=decodeURI(url);
     var theRequest = new Object();
@@ -26,12 +25,13 @@ $(document).ready(function() {
                 value:target
             },
             success : function(res) {
-                $('#id').val(res.result[0]['id']);$('#username').val(res.result[0]['username']);$('#password').val(res.result[0]['password']);$('#password_salt').val(res.result[0]['password_salt']);$('#last_login_ip').val(res.result[0]['last_login_ip']);$('#last_login_time').val(res.result[0]['last_login_time']);$('#create_time').val(res.result[0]['create_time']);$('#update_time').val(res.result[0]['update_time']);
+                $('#username').val(res.result[0]['username']);
             }
         });
 
         $("#commit").click(function() {
-            var id = $('#id').val();var username = $('#username').val();var password = $('#password').val();var password_salt = $('#password_salt').val();var last_login_ip = $('#last_login_ip').val();var last_login_time = $('#last_login_time').val();var create_time = $('#create_time').val();var update_time = $('#update_time').val();
+            var username = $('#username').val();
+            var password = $('#password').val();
 
             $.ajax({
                 type : "POST",
@@ -39,7 +39,8 @@ $(document).ready(function() {
                 url : '/' + FILE + '/AdminUser/updateData',
                 data : {
                     target:target,
-                    id:id,username:username,password:password,password_salt:password_salt,last_login_ip:last_login_ip,last_login_time:last_login_time,create_time:create_time,update_time:update_time
+                    username:username,
+                    password:password
                 },
                 success : function(res) {
                     if(res.status === 200){

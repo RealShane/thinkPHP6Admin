@@ -25,6 +25,9 @@ Route::group(function () {
     Route::rule('adminInfo', '/admin/AdminBaseAccess/adminInfo', 'POST');
     Route::rule('seeAllTable', '/admin/AdminBaseAccess/seeAllTable', 'POST');
     Route::rule('seeAllCatalogue', '/admin/AdminBaseAccess/seeAllCatalogue', 'POST');
+}) -> middleware(IsLogin::class);
+
+Route::group(function () {
     /**
      * 视图控制器
      */
@@ -48,6 +51,7 @@ Route::group(function () {
      * 管理员权限分配
      */
     Route::rule('AdminAuthAccess/seeAll', '/admin/AdminAuthAccess/seeAll', 'POST');
+    Route::rule('AdminAuthAccess/seeAuthGroup', '/admin/AdminAuthAccess/seeAuthGroup', 'POST');
     Route::rule('AdminAuthAccess/createData', '/admin/AdminAuthAccess/createData', 'POST');
     Route::rule('AdminAuthAccess/batchDeleteData', '/admin/AdminAuthAccess/batchDeleteData', 'POST');
     Route::rule('AdminAuthAccess/deleteData', '/admin/AdminAuthAccess/deleteData', 'POST');
@@ -59,6 +63,7 @@ Route::group(function () {
      * 管理员权限组
      */
     Route::rule('AdminAuthGroup/seeAll', '/admin/AdminAuthGroup/seeAll', 'POST');
+    Route::rule('AdminAuthGroup/seeGenerator', '/admin/AdminAuthGroup/seeGenerator', 'POST');
     Route::rule('AdminAuthGroup/createData', '/admin/AdminAuthGroup/createData', 'POST');
     Route::rule('AdminAuthGroup/batchDeleteData', '/admin/AdminAuthGroup/batchDeleteData', 'POST');
     Route::rule('AdminAuthGroup/deleteData', '/admin/AdminAuthGroup/deleteData', 'POST');
@@ -70,12 +75,7 @@ Route::group(function () {
      * 代码生成
      */
     Route::rule('AdminGenerator/seeAll', '/admin/AdminGenerator/seeAll', 'POST');
-    Route::rule('AdminGenerator/createData', '/admin/AdminGenerator/createData', 'POST');
-    Route::rule('AdminGenerator/batchDeleteData', '/admin/AdminGenerator/batchDeleteData', 'POST');
-    Route::rule('AdminGenerator/deleteData', '/admin/AdminGenerator/deleteData', 'POST');
-    Route::rule('AdminGenerator/updateData', '/admin/AdminGenerator/updateData', 'POST');
     Route::rule('AdminGenerator/retrieveData', '/admin/AdminGenerator/retrieveData', 'POST');
-    Route::rule('AdminGenerator/viewAddEdit', '/admin/AdminGenerator/viewAddEdit', 'GET');
     Route::rule('AdminTable/getAllTable', '/admin/AdminTable/getAllTable', 'POST');
     Route::rule('AdminTable/codeGenerator', '/admin/AdminTable/codeGenerator', 'POST');
     /**

@@ -14,7 +14,7 @@ class Auth
     public function handle($request, \Closure $next){
 
         $user = session(config('admin.session_user'));
-        if($user == NULL){
+        if ($user == NULL){
             return $next($request);
         }
         try {
@@ -23,7 +23,7 @@ class Auth
                 return show_res(
                     config("status.failed"),
                     config("message.failed"),
-                    "错误的访问"
+                    "该管理员账号已被删除！"
                 );
             }
             $available = Db::table('z_admin_auth_group') -> where('id', $auth['group']) -> find();
@@ -37,25 +37,25 @@ class Auth
         }
 
 
-        if($available['rules'] == '*'){
+        if ($available['rules'] == '*'){
             return $next($request);
         }
-        $rules = explode(',',$available['rules']);
+        $rules = explode(',', $available['rules']);
         $controllers = [];$tableNames = [];$i = 1;
-        foreach($rules as $key){
-            if($key == NULL){
+        foreach ($rules as $key){
+            if ($key == NULL){
                 continue;
             }
             $controllers[$key] = Db::table('z_admin_generator') -> where('id', $key) -> find();
         }
-        foreach($controllers as $key){
-            $tableNames[$i] = str_replace("_","",$key['table_name']);
+        foreach ($controllers as $key){
+            $tableNames[$i] = str_replace("_", "", $key['table_name']);
             $tableNames[$i] = ucwords($tableNames[$i]);
             $i++;
         }
         $identity = explode('/', $request -> pathinfo());
-        foreach($tableNames as $key){
-            if($key == $identity[0]){
+        foreach ($tableNames as $key){
+            if ($key == $identity[0]){
                 return $next($request);
             }
         }
@@ -63,7 +63,7 @@ class Auth
         return show_res(
             config("status.failed"),
             config("message.failed"),
-            "错误的访问"
+            "你没有权限访问！"
         );
     }
 

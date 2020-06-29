@@ -1,13 +1,10 @@
 <?php
 namespace app\admin\controller;
 use app\common\business\lib\BaseMethod;
+use app\common\model\admin\Catalogue;
 use think\facade\View;
 class AdminGenerator extends BaseMethod
 {
-
-    public function viewAddEdit(){
-        return View::fetch('command/add_edit');
-    }
 
     public function retrieveData(){
         $key = $this -> request -> param("key", '', 'trim');
@@ -19,57 +16,24 @@ class AdminGenerator extends BaseMethod
         );
     }
     
-    public function updateData(){
-        $id = $this -> request -> param("target", '', 'trim');
-        $data = $this -> request -> param(['id','table_name','catalogue_bind','executor','create_time']);
-        $backInfo = $this -> Update('z_admin_generator', $id ,$data);
-        return $this -> show(
-            config("status.success"),
-            config("message.success"),
-            "更改了".$backInfo."条数据"
-        );
-    }
-    
-    public function deleteData(){
-        $id = $this -> request -> param("target", '', 'trim');
-        return $this -> show(
-            config("status.success"),
-            config("message.success"),
-            $this -> Delete('z_admin_generator', $id)
-        );
-    }
-    
-    public function createData(){
-        $data = $this -> request -> param();
-        $backInfo = $this -> Create('z_admin_generator', $data);
-        if($backInfo == 1){
-            return $this -> show(
-                config("status.success"),
-                config("message.success"),
-                NULL
-            );
+    public function seeAll(){
+        $data = $this -> throwAll('z_admin_generator');
+        $res = [];
+        foreach ($data as $key){
+            $temp = (new Catalogue()) -> findById($key['catalogue_bind']);
+            $icon = $temp['icon'];
+            $res[] = [
+                'id' => $key['id'],
+                'table_comment' => $key['table_comment'],
+                'catalogue_bind' => "<i class=\"Hui-iconfont\">$icon</i>" . $temp['catalogue_name'],
+                'executor' => $key['executor'],
+                'create_time' => $key['create_time']
+            ];
         }
         return $this -> show(
-            config("status.failed"),
-            config("message.failed"),
-            $backInfo
-        );
-    }
-    
-    public function seeAll(){
-        return $this -> show(
             config("status.success"),
             config("message.success"),
-            $this -> throwAll('z_admin_generator')
-        );
-    }
-    
-    public function batchDeleteData(){
-        $ids = $this -> request -> param("ids", '', 'trim');
-        return $this -> show(
-            config("status.success"),
-            config("message.success"),
-            $this -> batchDelete('z_admin_generator', $ids)
+            $res
         );
     }
 

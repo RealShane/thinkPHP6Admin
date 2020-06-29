@@ -15,6 +15,15 @@ $(document).ready(function() {
     $.getJSON("/assets/js/admin/route.json", "", function(data) {
         FILE = data.FILE;
     });
+    var tables = null;
+    $.ajax({
+        type : "POST",
+        contentType : "application/x-www-form-urlencoded",
+        url : '/' + FILE + '/AdminAuthGroup/seeGenerator',
+        success : function(res) {
+            tables = res.result;
+        }
+    });
     if(target != -1){
         $.ajax({
             type : "POST",
@@ -27,19 +36,43 @@ $(document).ready(function() {
             success : function(res) {
                 $('#id').val(res.result[0]['id']);
                 $('#name').val(res.result[0]['name']);
-                $('#rules').val(res.result[0]['rules']);
                 $('#create_time').val(res.result[0]['create_time']);
                 $('#update_time').val(res.result[0]['update_time']);
+                for (let table of tables){
+                    var shane = false;
+                    for (let rule of res.result[0]['rules_id']){
+                        if (table['id'] == rule){
+                            $("#rules").append(
+                                "<div class=\"check-box\">" +
+                                    "<input value=" + table['id'] + " type=\"checkbox\" name='rule' checked>" +
+                                    "<label for=\"checkbox-1\">" + table['table_comment'] + "</label>" +
+                                "</div>"
+                            );
+                            shane = true;
+                        }
+                    }
+                    if (shane){
+                        continue;
+                    }
+                    $("#rules").append(
+                        "<div class=\"check-box\">" +
+                            "<input value=" + table['id'] + " type=\"checkbox\" name='rule'>" +
+                            "<label for=\"checkbox-1\">" + table['table_comment'] + "</label>" +
+                        "</div>"
+                    );
+                }
             }
         });
     
         $("#commit").click(function() {
             var id = $('#id').val();
             var name = $('#name').val();
-            var rules = $('#rules').val();
             var create_time = $('#create_time').val();
             var update_time = $('#update_time').val();
-
+            var rules = 0;
+            $("[name='rule']:checked").each(function(index, value){
+                rules += "," + $(value).val();
+            });
             $.ajax({
                 type : "POST",
                 contentType: "application/x-www-form-urlencoded",
@@ -61,12 +94,23 @@ $(document).ready(function() {
         })
     }
     if(target == -1){
+        for (let table of tables){
+            $("#rules").append(
+                "<div class=\"check-box\">" +
+                    "<input value=" + table['id'] + " type=\"checkbox\" name='rule'>" +
+                    "<label for=\"checkbox-1\">" + table['table_comment'] + "</label>" +
+                "</div>"
+            );
+        }
         $("#commit").click(function() {
             var id = $('#id').val();
             var name = $('#name').val();
-            var rules = $('#rules').val();
             var create_time = $('#createtime').val();
             var update_time = $('#updatetime').val();
+            var rules = 0;
+            $("[name='rule']:checked").each(function(index, value){
+                rules += "," + $(value).val();
+            });
             $.ajax({
                 type : "POST",
                 contentType: "application/x-www-form-urlencoded",

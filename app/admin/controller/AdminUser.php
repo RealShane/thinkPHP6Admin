@@ -64,8 +64,10 @@ class AdminUser extends BaseMethod
 
     public function updateData(){
         $id = $this -> request -> param("target", '', 'trim');
-        $data = $this -> request -> param(['id','username','password','password_salt','last_login_ip','last_login_time','create_time','update_time']);
-        $backInfo = $this -> Update('z_admin_user', $id ,$data);
+        $data["username"] = $this -> request -> param("username", '', 'trim');
+        $data["password"] = $this -> request -> param("password", '', 'trim');
+        $res = (new AdminUserBusiness) -> passwordAddSalt($data);
+        $backInfo = $this -> Update('z_admin_user', $id , $res);
         return $this -> show(
             config("status.success"),
             config("message.success"),

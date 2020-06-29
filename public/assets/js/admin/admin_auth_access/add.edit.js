@@ -15,6 +15,15 @@ $(document).ready(function() {
     $.getJSON("/assets/js/admin/route.json", "", function(data) {
         FILE = data.FILE;
     });
+    var groups = null;
+    $.ajax({
+        type : "POST",
+        contentType : "application/x-www-form-urlencoded",
+        url : '/' + FILE + '/AdminAuthAccess/seeAuthGroup',
+        success : function(res) {
+            groups = res.result;
+        }
+    });
     if(target != -1){
         $.ajax({
             type : "POST",
@@ -25,12 +34,26 @@ $(document).ready(function() {
                 value:target
             },
             success : function(res) {
-                $('#id').val(res.result[0]['id']);$('#username').val(res.result[0]['username']);$('#group').val(res.result[0]['group']);
+                $('#id').val(res.result[0]['id']);
+                $('#username').val(res.result[0]['username']);
+                for (let group of groups){
+                    if (group['id'] == res.result[0]['group_id']){
+                        $("#group").append(
+                            "<option selected value='" + group['id'] +"'>" + group['name'] + "</option>"
+                        );
+                        continue;
+                    }
+                    $("#group").append(
+                        "<option value='" + group['id'] +"'>" + group['name'] + "</option>"
+                    );
+                }
             }
         });
     
         $("#commit").click(function() {
-            var id = $('#id').val();var username = $('#username').val();var group = $('#group').val();
+            var id = $('#id').val();
+            var username = $('#username').val();
+            var group = $('#group').val();
 
             $.ajax({
                 type : "POST",
@@ -49,14 +72,23 @@ $(document).ready(function() {
         })
     }
     if(target == -1){
+        for (let group of groups){
+            $("#group").append(
+                "<option value='" + group['id'] +"'>" + group['name'] + "</option>"
+            );
+        }
         $("#commit").click(function() {
-            var id = $('#id').val();var username = $('#username').val();var group = $('#group').val();
+            var id = $('#id').val();
+            var username = $('#username').val();
+            var group = $('#group').val();
             $.ajax({
                 type : "POST",
                 contentType: "application/x-www-form-urlencoded",
                 url : '/' + FILE + '/AdminAuthAccess/createData',
                 data : {
-                    id:id,username:username,group:group
+                    id:id,
+                    username:username,
+                    group:group
                 },
                 success : function(res) {
                     if(res.status == 200){

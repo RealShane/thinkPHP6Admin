@@ -28,7 +28,7 @@ author：Shane
                     \        \           \
                      \______Validate    数据库
     
-## 新增
+## 新增后台
 
     *在线命令
         *可对任意表进行CRUD生成提升后台高扩展性
@@ -42,9 +42,6 @@ author：Shane
         *管理员权限组设置
             *自带超级权限组，二级权限组（建议超级权限组仅超级管理员一人）
             *可自定义权限组
-    *可更改后台地址入口
-        *修改.env中的ADMIN.FILE
-        *修改/assets/js/admin/route.json中的FILE        
 
 ## 反作弊机制
     

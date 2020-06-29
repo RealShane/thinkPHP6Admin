@@ -16,10 +16,21 @@ class AdminAuthAccess extends BaseMethod
     public function retrieveData(){
         $key = $this -> request -> param("key", '', 'trim');
         $value = $this -> request -> param("value", '', 'trim');
+        $data = $this -> Retrieve('z_admin_auth_access', $key, $value);
+        $res = [];
+        foreach ($data as $key){
+            $temp = (new \app\common\model\admin\AdminAuthGroup()) -> findById($key['group']);
+            $res[] = [
+                'id' => $key['id'],
+                'username' => $key['username'],
+                'group_id' => $key['group'],
+                'group' => $temp['name']
+            ];
+        }
         return $this -> show(
             config("status.success"),
             config("message.success"),
-            $this -> Retrieve('z_admin_auth_access', $key, $value)
+            $res
         );
     }
     
@@ -61,10 +72,20 @@ class AdminAuthAccess extends BaseMethod
     }
     
     public function seeAll(){
+        $data = $this -> throwAll('z_admin_auth_access');
+        $res = [];
+        foreach ($data as $key){
+            $temp = (new \app\common\model\admin\AdminAuthGroup()) -> findById($key['group']);
+            $res[] = [
+                'id' => $key['id'],
+                'username' => $key['username'],
+                'group' => $temp['name']
+            ];
+        }
         return $this -> show(
             config("status.success"),
             config("message.success"),
-            $this -> throwAll('z_admin_auth_access')
+            $res
         );
     }
     
@@ -74,6 +95,14 @@ class AdminAuthAccess extends BaseMethod
             config("status.success"),
             config("message.success"),
             $this -> batchDelete('z_admin_auth_access', $ids)
+        );
+    }
+
+    public function seeAuthGroup(){
+        return $this -> show(
+            config("status.success"),
+            config("message.success"),
+            $this -> throwAll('z_admin_auth_group')
         );
     }
 

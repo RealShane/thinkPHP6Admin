@@ -11,6 +11,11 @@ return[
     //已存在
     "exist" => 1,
     //不存在
-    "not_exist" => 2
+    "not_exist" => 2,
+    /**
+     * 抽奖状态配置
+     */
+    //次数用完
+    "times_over" => 101
 	
 ];
