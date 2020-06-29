@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- 主机： localhost
--- 生成日期： 2020-06-28 01:12:28
+-- 生成日期： 2020-06-29 14:37:58
 -- 服务器版本： 5.7.26
 -- PHP 版本： 7.3.4
 
@@ -60,8 +60,7 @@ CREATE TABLE `z_admin_auth_group` (
 --
 
 INSERT INTO `z_admin_auth_group` (`id`, `name`, `rules`, `create_time`, `update_time`) VALUES
-(1, '超级权限组', '*', 1579786002, 1579786088),
-(2, '二级权限组', '1,2,3,4', 1579786067, 1579951863);
+(1, '超级权限组', '*', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -169,7 +168,7 @@ ALTER TABLE `z_admin_auth_access`
 -- 使用表AUTO_INCREMENT `z_admin_auth_group`
 --
 ALTER TABLE `z_admin_auth_group`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '自增id', AUTO_INCREMENT=3;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '自增id', AUTO_INCREMENT=2;
 
 --
 -- 使用表AUTO_INCREMENT `z_admin_generator`
