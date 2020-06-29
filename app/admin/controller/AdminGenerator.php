@@ -24,6 +24,7 @@ class AdminGenerator extends BaseMethod
             $icon = $temp['icon'];
             $res[] = [
                 'id' => $key['id'],
+                'table_name' => $key['table_name'],
                 'table_comment' => $key['table_comment'],
                 'catalogue_bind' => "<i class=\"Hui-iconfont\">$icon</i>" . $temp['catalogue_name'],
                 'executor' => $key['executor'],
