@@ -26,7 +26,7 @@ class AdminAuthGroup extends BaseMethod
                     $str = "超级权限";
                     break;
                 }
-                if ($rule == NULL){
+                if (($rule == NULL) || ($rule == 0)){
                     continue;
                 }
                 $temp = (new \app\common\model\admin\AdminGenerator()) -> findById($rule);
@@ -47,7 +47,7 @@ class AdminAuthGroup extends BaseMethod
             $res
         );
     }
-    
+
     public function updateData(){
         $id = $this -> request -> param("target", '', 'trim');
         $data['id'] = $this -> request -> param("id", '', 'trim');
@@ -61,7 +61,7 @@ class AdminAuthGroup extends BaseMethod
             "更改了".$backInfo."条数据"
         );
     }
-    
+
     public function deleteData(){
         $id = $this -> request -> param("target", '', 'trim');
         return $this -> show(
@@ -70,7 +70,7 @@ class AdminAuthGroup extends BaseMethod
             $this -> Delete('z_admin_auth_group', $id)
         );
     }
-    
+
     public function createData(){
         $data['name'] = $this -> request -> param("name", '', 'trim');
         $data['rules'] = $this -> request -> param("rules", '', 'trim');
@@ -90,7 +90,7 @@ class AdminAuthGroup extends BaseMethod
             $backInfo
         );
     }
-    
+
     public function seeAll(){
         $data = $this -> throwAll('z_admin_auth_group');
         $res = [];
@@ -102,7 +102,7 @@ class AdminAuthGroup extends BaseMethod
                     $str = "超级权限";
                     break;
                 }
-                if ($rule == NULL){
+                if (($rule == NULL) || ($rule == 0)){
                     continue;
                 }
                 $temp = (new \app\common\model\admin\AdminGenerator()) -> findById($rule);
@@ -122,7 +122,7 @@ class AdminAuthGroup extends BaseMethod
             $res
         );
     }
-    
+
     public function batchDeleteData(){
         $ids = $this -> request -> param("ids", '', 'trim');
         return $this -> show(
@@ -141,4 +141,3 @@ class AdminAuthGroup extends BaseMethod
     }
 
 }
-        
