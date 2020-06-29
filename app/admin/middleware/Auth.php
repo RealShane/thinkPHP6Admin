@@ -43,7 +43,7 @@ class Auth
         $rules = explode(',', $available['rules']);
         $controllers = [];$tableNames = [];$i = 1;
         foreach ($rules as $key){
-            if ($key == NULL){
+            if (($key == NULL) || ($key == 0)){
                 continue;
             }
             $controllers[$key] = Db::table('z_admin_generator') -> where('id', $key) -> find();
