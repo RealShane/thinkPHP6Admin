@@ -18,7 +18,6 @@ use think\facade\Db;
 class BaseMethod extends BaseController
 {
 
-
     /**查
      * @param $tableName
      * @param $key

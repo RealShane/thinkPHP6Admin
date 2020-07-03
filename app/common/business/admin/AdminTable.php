@@ -26,7 +26,21 @@ class AdminTable
         $this -> FILE = Env::get('ADMIN.FILE', '');
     }
 
-    public function generateInfo($tableName, $tableComment, $path, $user){
+    public function generate($tableName, $path){
+        $Controller = $this -> generateController($tableName);
+        $View = $this -> generateView($tableName, $path);
+        $JS = $this -> generateJS($tableName);
+        $Route = $this -> generateRoute($tableName);
+        if($Controller && $View && $JS && $Route){
+            $user = session(config('admin.session_user'));
+            $tableComment = $this -> getTableComment($tableName);
+            $tableComment = $tableComment[0]['Comment'];
+            return $this -> generateInfo($tableName, $tableComment, $path, $user);
+        }
+        return config("status.failed");
+    }
+
+    private function generateInfo($tableName, $tableComment, $path, $user){
         try {
             $isExist = Db::name('z_admin_generator') -> where('table_name', $tableName) -> find();
             $data['table_name'] = $tableName;
@@ -42,7 +56,7 @@ class AdminTable
         }
     }
 
-    public function generateRoute($tableName){
+    private function generateRoute($tableName){
         $template = $this -> templateRoute($tableName);
 
         if (file_exists(App::getAppPath() . "route/" . $tableName . ".php")){
@@ -52,7 +66,7 @@ class AdminTable
         return 1;
     }
 
-    public function generateJS($tableName){
+    private function generateJS($tableName){
         $origin = $tableName;
         $tableName = str_replace("_","",$tableName);
 
@@ -76,7 +90,7 @@ class AdminTable
         return 1;
     }
 
-    public function generateView($tableName, $path){
+    private function generateView($tableName, $path){
         $origin = $tableName;
         $tableName = str_replace("_","",$tableName);
 
@@ -103,7 +117,7 @@ class AdminTable
         return 1;
     }
 
-    public function generateController($tableName){
+    private function generateController($tableName){
         $origin = $tableName;
         $tableName = str_replace("_","",$tableName);
         $allField = $this -> getAllTableField($origin);
@@ -123,17 +137,17 @@ class AdminTable
         return Db::query($str);
     }
 
-    public function getAllTableField($tableName){
+    private function getAllTableField($tableName){
         $str = "SHOW FULL FIELDS FROM ".$tableName;
         return Db::query($str);
     }
 
-    public function getTableComment($tableName){
+    private function getTableComment($tableName){
         $str = "SHOW TABLE STATUS LIKE '$tableName'";
         return Db::query($str);
     }
 
-    public function templateRoute($tableName){
+    private function templateRoute($tableName){
         $tableName = str_replace("_","",$tableName);
         $lower = $tableName;
         $upper = ucwords($tableName);
@@ -183,10 +197,68 @@ Route::group(function () {
 ";
     }
 
-    public function templateAddEditJS($tableName, $allField){
+    private function templateAddEditJS($tableName, $allField){
+
         $lower = $tableName;
         $upper = ucwords($tableName);
-        $str1 = '';$str2 = '';$str3 = '';
+        $str1 = '';$str2 = '';$str3 = '';$upload = '';
+        $rich_text = '';$input_rich_text = '';
+        foreach ($allField as $key){
+            if (strpos($key['Field'], 'content') !== false){
+                $field = $key['Field'];
+                $rich_text .= "
+    $(\"#$field\").summernote({
+        lang : 'zh-CN',
+        height: 200,
+        placeholder : '请输入内容',
+        toolbar: [
+            ['operate', ['undo','redo']],
+            ['magic',['style']],
+            ['style', ['bold', 'italic', 'underline', 'clear']],
+            ['para', ['height','fontsize','ul', 'ol', 'paragraph']],
+            ['font', ['strikethrough', 'superscript', 'subscript']],
+            ['color', ['color']],
+            ['insert',['picture','video','link','table','hr']],
+            ['layout',['fullscreen','codeview']],
+        ],
+        callbacks : {
+            onImageUpload : function(files) {
+                var form = new FormData();
+                form.append('file', files[0]);
+                $.ajax({
+                    type : \"POST\",
+                    url : '/' + FILE + '/upload',
+                    dataType : 'json',
+                    data : form,
+                    processData : false,
+                    contentType : false,
+                    cache : false,
+                    success : function(res){
+                        $('#$field').summernote('editor.insertImage', res.result);
+                    }
+                })
+            }
+        }
+    });
+                ";
+                $input_rich_text .= "$('#$field').summernote(\"code\", res.result[0]['$field']);";
+            }
+            if (strpos($key['Field'], 'image') !== false){
+                $field = $key['Field'];
+                $upload .= "
+    layui.use('upload', function(){
+        var upload = layui.upload;
+        var uploadInst = upload.render({
+            elem: '#" . $field . "_upload',
+            url: '/' + FILE + '/upload',
+            done: function(res){
+                $('#$field').val(res.result);
+            }
+        });
+    });
+                ";
+            }
+        }
         foreach ($allField as $key){
             $str1 .= "$('#".$key['Field']."').val(res.result[0]['".$key['Field']."']);";
         }
@@ -194,7 +266,7 @@ Route::group(function () {
             $str2 .= "var ".$key['Field']." = $('#".$key['Field']."').val();";
         }
         foreach ($allField as $key){
-            $str3 .= $key['Field'].":".$key['Field'].",";
+            $str3 .= $key['Field']." : ".$key['Field'].", ";
         }
         $str3 = rtrim($str3, ',');
 return
@@ -219,6 +291,8 @@ $(document).ready(function() {
     $.getJSON(\"/assets/js/admin/route.json\", \"\", function(data) {
         FILE = data.FILE;
     });
+    $rich_text
+    $upload
     if(target != -1){
         $.ajax({
             type : \"POST\",
@@ -230,6 +304,7 @@ $(document).ready(function() {
             },
             success : function(res) {
                 $str1
+                $input_rich_text
             }
         });
     
@@ -275,12 +350,19 @@ $(document).ready(function() {
 ";
     }
 
-    public function templateJS($tableName, $allField){
+    private function templateJS($tableName, $allField){
         $lower = $tableName;
         $upper = ucwords($tableName);
         $str = '';
         foreach ($allField as $key){
-            $str .= "\"<td>\"+key['".$key['Field']."']+\"</td>\" +";
+            if (strpos($key['Field'], 'content') !== false){
+                continue;
+            }
+            if (strpos($key['Field'], 'image') !== false){
+                $str .= "\"<td style='text-align: center'><img width='100' height='100' src='\" + key['".$key['Field']."'] + \"'></td>\" + ";
+                continue;
+            }
+            $str .= "\"<td style='text-align: center'>\" + key['".$key['Field']."'] + \"</td>\" + ";
         }
 
 return
@@ -316,15 +398,15 @@ $(document).ready(function(){
                         count : res.result.length,
                         jump: function(obj){
                             document.getElementById('dataRoom').innerHTML = function(){
-                                var arr = [], thisData = res.result.concat().splice(obj.curr*obj.limit - obj.limit, obj.limit);
+                                var arr = [], thisData = res.result.concat().splice(obj.curr * obj.limit - obj.limit, obj.limit);
                                 layui.each(thisData, function(index, key){
                                     arr.push(
                                         \"<tr>\" +
-                                            \"<td><input type='checkbox' name='multiple' value=\" + key['id'] + \"></td>\" +
+                                            \"<td style='text-align: center'><input type='checkbox' name='multiple' value=\" + key['id'] + \"></td>\" +
                                             $str
-                                            \"<td class='td-manage'>\" +
-                                                \"<span class='label label - success radius'><a onClick='edit(\" + key['id'] + \")'>编辑</a></span>\" +
-                                                \"<span class='label radius'><a onClick='delete_single(\" + key['id'] + \")'>删除</a></span>\" +
+                                            \"<td style='text-align: center'>\" +
+                                                \"<input type='button' onClick='edit(\" + key['id'] + \")' value='编辑' class='btn btn-secondary radius'>&nbsp;&nbsp;\" +
+                                                \"<input type='button' onclick='delete_single(\" + key['id'] + \")' value='删除' class='btn btn-danger radius'>\" +
                                             \"</td>\" +
                                         \"</tr>\"
                                     );
@@ -401,15 +483,15 @@ $(\"#search_send\").click(function(){
                         count : res.result.length,
                         jump: function(obj){
                             document.getElementById('dataRoom').innerHTML = function(){
-                                var arr = [], thisData = res.result.concat().splice(obj.curr*obj.limit - obj.limit, obj.limit);
+                                var arr = [], thisData = res.result.concat().splice(obj.curr * obj.limit - obj.limit, obj.limit);
                                 layui.each(thisData, function(index, key){
                                     arr.push(
                                         \"<tr>\" +
-                                            \"<td><input type='checkbox' name='multiple' value=\" + key['id'] + \"></td>\" +
+                                            \"<td style='text-align: center'><input type='checkbox' name='multiple' value=\" + key['id'] + \"></td>\" +
                                             $str
-                                            \"<td class='td-manage'>\" +
-                                                \"<span class='label label - success radius'><a onClick='edit(\" + key['id'] + \")'>编辑</a></span>\" +
-                                                \"<span class='label radius'><a onClick='delete_single(\" + key['id'] + \")'>删除</a></span>\" +
+                                            \"<td style='text-align: center'>\" +
+                                                \"<input type='button' onClick='edit(\" + key['id'] + \")' value='编辑' class='btn btn-secondary radius'>&nbsp;&nbsp;\" +
+                                                \"<input type='button' onclick='delete_single(\" + key['id'] + \")' value='删除' class='btn btn-danger radius'>\" +
                                             \"</td>\" +
                                         \"</tr>\"
                                     );
@@ -469,9 +551,23 @@ function delete_single(id) {
 ";
     }
 
-    public function templateAddEdit($tableName, $allField){
+    private function templateAddEdit($tableName, $allField){
         $str = '';
         foreach ($allField as $field){
+            if (strpos($field['Field'], 'image') !== false){
+                $str .= "
+            <div class=\"row clearfix\">
+		        <label class=\"form-label col-xs-4 col-sm-3\">".$field['Comment']."</label>
+		        <div class=\"form-controls col-xs-8 col-sm-9\">
+			        <input type=\"text\" class=\"input-text\" id=\"".$field['Field']."\">
+			        <button type=\"button\" class=\"layui-btn\" id=\"".$field['Field']."_upload\">
+						<i class=\"layui-icon\">&#xe67c;</i>上传图片
+					</button>
+		        </div>
+	        </div>
+            ";
+                continue;
+            }
             $str .= "
             <div class=\"row clearfix\">
 		        <label class=\"form-label col-xs-4 col-sm-3\">".$field['Comment']."</label>
@@ -482,11 +578,13 @@ function delete_single(id) {
             ";
         }
 
-return "
-<!DOCTYPE HTML>
+return
+"<!DOCTYPE HTML>
 <html>
 <head>
 	{include file=\"public/_meta\" /}
+	<link rel=\"stylesheet\" type=\"text/css\" href=\"/lib/summernote.with.bootstrap/dist/bootstrap.css\" />
+	<link rel=\"stylesheet\" type=\"text/css\" href=\"/lib/summernote.with.bootstrap/dist/summernote.css\" />
 </head>
 <body style=\"background-color:#fff\">
 <div class=\"wap-container\">
@@ -510,7 +608,7 @@ return "
 ";
     }
 
-    public function templateView($fieldNum, $title, $allField, $tableName, $path){
+    private function templateView($fieldNum, $title, $allField, $tableName, $path){
         $file = $this -> FILE;
         $catalogue = Db::name('z_catalogue') -> where('id', $path) -> find();
         $path = $catalogue['catalogue_name'];
@@ -518,6 +616,9 @@ return "
         $fieldNum += 2;
         $str = '';$str1 = '';
         foreach ($allField as $field){
+            if (strpos($field['Field'], 'content') !== false){
+                continue;
+            }
             $str .= "<th id='".$field['Field']."'>".$field['Comment']."</th>";
         }
         foreach ($allField as $field){
@@ -626,7 +727,7 @@ return
 ";
     }
 
-    public function templateController($tableName, $allField, $origin){
+    private function templateController($tableName, $allField, $origin){
         $str = '';$str1 = '';$str2 = '';$i = 'A';$str3 = '';$j = 'A';
         foreach($allField as $key){
             $str .= "'".$key['Field']."',";
