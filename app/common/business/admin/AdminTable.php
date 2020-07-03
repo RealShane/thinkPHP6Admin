@@ -201,8 +201,7 @@ Route::group(function () {
 
         $lower = $tableName;
         $upper = ucwords($tableName);
-        $str1 = '';$str2 = '';$str3 = '';$upload = '';
-        $rich_text = '';$input_rich_text = '';
+        $str1 = '';$str2 = '';$str3 = '';$upload = '';$rich_text = '';
         foreach ($allField as $key){
             if (strpos($key['Field'], 'content') !== false){
                 $field = $key['Field'];
@@ -241,7 +240,6 @@ Route::group(function () {
         }
     });
                 ";
-                $input_rich_text .= "$('#$field').summernote(\"code\", res.result[0]['$field']);";
             }
             if (strpos($key['Field'], 'image') !== false){
                 $field = $key['Field'];
@@ -260,10 +258,19 @@ Route::group(function () {
             }
         }
         foreach ($allField as $key){
-            $str1 .= "$('#".$key['Field']."').val(res.result[0]['".$key['Field']."']);";
+            if (strpos($key['Field'], 'content') !== false){
+                $field = $key['Field'];
+                $str1 .= "$('#$field').summernote(\"code\", res.result[0]['$field']);";
+                continue;
+            }
+            $str1 .= "$('#" . $key['Field'] . "').val(res.result[0]['" . $key['Field'] . "']);";
         }
         foreach ($allField as $key){
-            $str2 .= "var ".$key['Field']." = $('#".$key['Field']."').val();";
+            if (strpos($key['Field'], 'content') !== false){
+                $str2 .= "var " . $key['Field'] . " = $('#" . $key['Field'] . "').summernote('code');";
+                continue;
+            }
+            $str2 .= "var " . $key['Field'] . " = $('#" . $key['Field'] . "').val();";
         }
         foreach ($allField as $key){
             $str3 .= $key['Field']." : ".$key['Field'].", ";
@@ -304,7 +311,6 @@ $(document).ready(function() {
             },
             success : function(res) {
                 $str1
-                $input_rich_text
             }
         });
     
