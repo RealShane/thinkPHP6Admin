@@ -30,11 +30,15 @@ $(document).ready(function(){
                                 layui.each(thisData, function(index, key){
                                     arr.push(
                                         "<tr>" +
-                                            "<td><input type='checkbox' name='multiple' value="+key['id']+"></td>" +
-                                            "<td>"+key['id']+"</td>" +"<td>"+key['name']+"</td>" +"<td>"+key['rules']+"</td>" +"<td>"+key['create_time']+"</td>" +"<td>"+key['update_time']+"</td>" +
-                                            "<td class='td-manage'>" +
-                                                "<span class='label label - success radius'><a onClick='edit("+key['id']+")'>编辑</a></span>" +
-                                                "<span class='label radius'><a onClick='delete_single("+key['id']+")'>删除</a></span>" +
+                                            "<td style='text-align: center'><input type='checkbox' name='multiple' value=" + key['id'] + "></td>" +
+                                            "<td style='text-align: center'>" + key['id'] + "</td>" +
+                                            "<td style='text-align: center'>" + key['name'] + "</td>" +
+                                            "<td style='text-align: center'>" + key['rules'] + "</td>" +
+                                            "<td style='text-align: center'>" + key['create_time'] + "</td>" +
+                                            "<td style='text-align: center'>" + key['update_time'] + "</td>" +
+                                            "<td style='text-align: center'>" +
+                                                "<input type='button' onClick='edit(" + key['id'] + ")' value='编辑' class='btn btn-secondary radius'>&nbsp;&nbsp;" +
+                                                "<input type='button' onclick='delete_single(" + key['id'] + ")' value='删除' class='btn btn-danger radius'>" +
                                             "</td>" +
                                         "</tr>"
                                     );
@@ -115,11 +119,15 @@ $("#search_send").click(function(){
                                 layui.each(thisData, function(index, key){
                                     arr.push(
                                         "<tr>" +
-                                            "<td><input type='checkbox' name='multiple' value="+key['id']+"></td>" +
-                                            "<td>"+key['id']+"</td>" +"<td>"+key['name']+"</td>" +"<td>"+key['rules']+"</td>" +"<td>"+key['create_time']+"</td>" +"<td>"+key['update_time']+"</td>" +
-                                            "<td class='td-manage'>" +
-                                                "<span class='label label - success radius'><a onClick='edit("+key['id']+")'>编辑</a></span>" +
-                                                "<span class='label radius'><a onClick='delete_single("+key['id']+")'>删除</a></span>" +
+                                            "<td style='text-align: center'><input type='checkbox' name='multiple' value=" + key['id'] + "></td>" +
+                                            "<td style='text-align: center'>" + key['id'] + "</td>" +
+                                            "<td style='text-align: center'>" + key['name'] + "</td>" +
+                                            "<td style='text-align: center'>" + key['rules'] + "</td>" +
+                                            "<td style='text-align: center'>" + key['create_time'] + "</td>" +
+                                            "<td style='text-align: center'>" + key['update_time'] + "</td>" +
+                                            "<td style='text-align: center'>" +
+                                                "<input type='button' onClick='edit(" + key['id'] + ")' value='编辑' class='btn btn-secondary radius'>&nbsp;&nbsp;" +
+                                                "<input type='button' onclick='delete_single(" + key['id'] + ")' value='删除' class='btn btn-danger radius'>" +
                                             "</td>" +
                                         "</tr>"
                                     );

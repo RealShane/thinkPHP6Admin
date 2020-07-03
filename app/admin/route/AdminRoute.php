@@ -28,6 +28,7 @@ Route::group(function () {
 }) -> middleware(IsLogin::class);
 
 Route::group(function () {
+    Route::rule('upload', '/admin/AdminBaseAccess/upload', 'POST');
     /**
      * 视图控制器
      */

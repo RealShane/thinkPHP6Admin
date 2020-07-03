@@ -44,7 +44,6 @@ function show_menu(data, FILE){
         contentType : "application/x-www-form-urlencoded",
         url : '/' + FILE + '/seeAllCatalogue',
         success : function(res) {
-
             for(let key of res.result){
                 $("#catalogue_here").append(
                     "<dl class=\"Hui-menu\">" +

@@ -40,25 +40,18 @@ class AdminTable extends BaseController
             );
         }
         $adminTableBusiness = new AdminTableBusiness();
-        $isSuccessController = $adminTableBusiness -> generateController($tableName);
-        $isSuccessView = $adminTableBusiness -> generateView($tableName, $path);
-        $isSuccessJS = $adminTableBusiness -> generateJS($tableName);
-        $isSuccessRoute = $adminTableBusiness -> generateRoute($tableName);
-
-        if($isSuccessController && $isSuccessView && $isSuccessJS && $isSuccessRoute){
-            $user = session(config('admin.session_user'));
-            $tableComment = $adminTableBusiness -> getTableComment($tableName);
-            $tableComment = $tableComment[0]['Comment'];
+        $errCode = $adminTableBusiness -> generate($tableName, $path);
+        if ($errCode == config("status.failed")){
             return $this -> show(
-                config("status.success"),
-                config("message.success"),
-                $adminTableBusiness -> generateInfo($tableName, $tableComment, $path, $user)
+                config("status.failed"),
+                config("message.failed"),
+                "未知原因生成失败！"
             );
         }
         return $this -> show(
-            config("status.failed"),
-            config("message.failed"),
-            NULL
+            config("status.success"),
+            config("message.success"),
+            $errCode
         );
     }
 

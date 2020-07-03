@@ -19,7 +19,6 @@ $(document).ready(function(){
                 validate:validate
             },
             success : function(res) {
-                console.log(res);
                 if(res.status === 100){
                     layer.msg(res.result);
                     $("#captcha").attr('src',"/captcha?id=" + Math.random());

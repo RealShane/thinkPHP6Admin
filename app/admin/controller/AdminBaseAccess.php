@@ -16,6 +16,7 @@ use app\common\business\lib\BaseMethod;
 use app\common\validate\admin\AdminLogin;
 use think\exception\ValidateException;
 use think\facade\Env;
+use think\facade\Filesystem;
 use think\facade\View;
 
 class AdminBaseAccess extends BaseMethod
@@ -104,5 +105,35 @@ class AdminBaseAccess extends BaseMethod
         if(!empty($user)){
             return header('location:/' . Env::get('ADMIN.FILE', '') . '/Index');
         }
+    }
+
+    public function upload(){
+        $file = request() -> file('file');
+
+        if ($file == null) {
+            return $this -> show(
+                config("status.failed"),
+                config("message.failed"),
+                '未上传图片'
+            );
+        }
+
+        $temp = explode(".", $_FILES["file"]["name"]);
+        $extension = end($temp);
+
+        if(!in_array($extension, array("jpeg", "jpg", "png"))){
+            return $this -> show(
+                config("status.failed"),
+                config("message.failed"),
+                '上传图片不合法'
+            );
+        }
+        $saveName = Filesystem::disk('public') -> putFile('admin_upload', $file, 'md5');
+
+        return $this -> show(
+            config("status.success"),
+            config("message.success"),
+            str_replace('\\', '/', '/uploads/' . $saveName)
+        );
     }
 }

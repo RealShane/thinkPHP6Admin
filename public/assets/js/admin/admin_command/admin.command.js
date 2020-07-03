@@ -9,7 +9,6 @@ $(document).ready(function(){
         contentType : "application/x-www-form-urlencoded",
         url : '/' + FILE + '/AdminGenerator/seeAll',
         success : function(res) {
-            console.log(res);
             $("#data_num").append(
                 "<strong>"+res.result.length+"</strong>"
             );
@@ -29,7 +28,12 @@ $(document).ready(function(){
                             layui.each(thisData, function(index, key){
                                 arr.push(
                                     "<tr>" +
-                                        "<td>"+key['id']+"</td>" +"<td>"+key['table_name']+"</td>" +"<td>"+key['table_comment']+"</td>" +"<td>├ "+key['catalogue_bind']+"</td>" +"<td>"+key['executor']+"</td>" +"<td>"+key['create_time']+"</td>" +
+                                        "<td style='text-align: center'>" + key['id'] + "</td>" +
+                                        "<td style='text-align: center'>" + key['table_name'] + "</td>" +
+                                        "<td style='text-align: center'>" + key['table_comment'] + "</td>" +
+                                        "<td style='text-align: center'>├ " + key['catalogue_bind'] + "</td>" +
+                                        "<td style='text-align: center'>" + key['executor'] + "</td>" +
+                                        "<td style='text-align: center'>" + key['create_time'] + "</td>" +
                                     "</tr>"
                                 );
                             });
@@ -88,7 +92,12 @@ $("#search_send").click(function(){
                                 layui.each(thisData, function(index, key){
                                     arr.push(
                                         "<tr>" +
-                                            "<td>"+key['id']+"</td>" +"<td>"+key['table_name']+"</td>" +"<td>"+key['table_comment']+"</td>" +"<td>"+key['catalogue_bind']+"</td>" +"<td>"+key['executor']+"</td>" +"<td>"+key['create_time']+"</td>" +
+                                            "<td style='text-align: center'>" + key['id'] + "</td>" +
+                                            "<td style='text-align: center'>" + key['table_name'] + "</td>" +
+                                            "<td style='text-align: center'>" + key['table_comment'] + "</td>" +
+                                            "<td style='text-align: center'>├ " + key['catalogue_bind'] + "</td>" +
+                                            "<td style='text-align: center'>" + key['executor'] + "</td>" +
+                                            "<td style='text-align: center'>" + key['create_time'] + "</td>" +
                                         "</tr>"
                                     );
                                 });
